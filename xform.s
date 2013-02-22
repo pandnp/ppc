@@ -1,23 +1,21 @@
-# load a byte from the address in register 2, store it in register 3,
-# and zero out the remaining bits
-lbz 3, 0(2)
+# Load a doubleword (64 bits) from the address specififed by
+# register 3 + register 20 and store the value into register 31
+ldx 31, 3, 20
 
-# store the 64-bit contents (double-word) of register 5 into the
-# address 32 bits past the address specified by register 23
-std 5, 32(23)
+#Load a byte from the address specified by register 10 + register 12 
+#and store the value into register 15 and zero-out remaining bits
+lbzx 15, 10, 12
 
-# store the low-order 32-bits (word) of register 5 into the address
-# 32 bits past the address specified by register 23
-stw 5, 32(23)
+#Load a halfword (16 bits) from the address specified by 
+#register 6 + register 7 and store the value into register 8, 
+#sign-extending the result through the remaining bits
+lhax 8, 6, 7
 
-# store the byte in the low-order 8 bits of register 30 into the 
-# address specified by register 4
-stb 30, 0(4)
+#Take the doubleword (64 bits) in register 20 and store it in the 
+#address specified by register 10 + register 11
+stdx 20, 10, 11
 
-# load the 16 bits (half-word) at address 300 into register 4, and
-# zero-out the remaining bits
-lhz 4, 300(0)
-
-# load the half-word (16-bits) that is 1 byte offset from the address
-# in register 31 and store the result sign-extended into register 18
-lha 18, 1(31)
+#Take the doubleword (64 bits) in register 20 and store it in the 
+#address specified by register 10 + register 11, and then update 
+#register 10 with the final address
+stdux 20, 10, 11
