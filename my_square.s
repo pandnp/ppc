@@ -10,6 +10,8 @@
 # set to zero. Notice the only symbol definition that is exported globally
 # is the official procedure descriptor.
 
+# Added example code for setting up and tearing down a stack frame.
+
 # C prototype for number-squaring function
 # typedef long long int63;
 # int64 my_square(int64 val);
@@ -29,10 +31,27 @@ my_square:	# this is the name of the function as seen
 ###FUNCTION CODE HERE###
 .text
 .my_square: # This is the label for the code itself (referenced in "opd")
-	# Parameter 1 -- number to be squared -- in register 3
+	##PROLOGUE##	
+	# Set up stack frame & back pointer (112 bytes -- minimum stack)
+	stdu 1, -112(1)	
+	# Save LR (optional)
+	mflr 0
+	std 0, 128(1)
+	# Save non-volatile registers (we don't have any)
 
+	##FUNCTION BODY##
+	# Parameter 1 -- number to be squared -- in register 3
 	# Multiply it by itself, and store it back in register 3
 	mulld 3, 3, 3
 
 	# The return value is now in register 3, so we need to leave
+	
+	##EPILOGUE##
+	# Restore non-volatile registers (we don't have any)
+	# Restore LR (not needed in this fuinction, but here anyway)
+	ld 0, 128(1)
+	mtlr 0
+	# Restore stack frame atomically
+	ld 1, 0(1)
+	# Return
 	blr
